@@ -50,7 +50,8 @@ public class ShellExplosion : MonoBehaviour
         m_ExplosionAudio.Play();
 
         //duration→m_ExplosionParticles.durationはobsolete(廃止)されているため、下記のように「main」を追記すること。2017.3現在。
-        Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.main.duration);
+        //Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.main.duration);
+        Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);
 
         Destroy(gameObject);
     }
