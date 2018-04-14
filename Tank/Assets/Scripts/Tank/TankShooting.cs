@@ -77,7 +77,7 @@ public class TankShooting : MonoBehaviour
         m_Fired = true;
 
         Rigidbody shellInstance = Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
-
+        shellInstance.GetComponent<ShellExplosion>().ShooterID = m_PlayerNumber;
         shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
         m_ShootingAudio.clip = m_FireClip;
         m_ShootingAudio.Play();

@@ -1,7 +1,11 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 public class ShellExplosion : MonoBehaviour
 {
+    [HideInInspector]public int ShooterID;
+    public Transform ShellPrefab;
+    public Transform TankPrefab;
     public LayerMask m_TankMask;                        // 爆発が影響するものをフィルタリングするために使用。ここでは、"プレイヤー" に設定されます。
     public ParticleSystem m_ExplosionParticles;         // 爆発時に再生するパーティクルへの参照
     public AudioSource m_ExplosionAudio;                // 爆発時に再生するオーディオへの参照
@@ -15,6 +19,13 @@ public class ShellExplosion : MonoBehaviour
     {
         //これまでに破棄されていない場合は、生存期間が過ぎたら砲弾を破棄します。
         Destroy(gameObject, m_MaxLifeTime);
+        Transform shell = Instantiate(ShellPrefab) as Transform;
+        Transform tank = Instantiate(TankPrefab) as Transform;
+        if (ShooterID == GetComponent<TankShooting>().m_PlayerNumber)
+        {
+            Physics.IgnoreCollision(shell.GetComponent<Collider>(), tank.GetComponent<Collider>());
+        }
+
     }
 
 
@@ -39,9 +50,12 @@ public class ShellExplosion : MonoBehaviour
                 continue;
 
             float damage = CalculateDamage(targetRigidbody.position);
-
             targetHealth.TakeDamage(damage);
+
+
+
         }
+
 
         m_ExplosionParticles.transform.parent = null;
 
@@ -49,8 +63,6 @@ public class ShellExplosion : MonoBehaviour
 
         m_ExplosionAudio.Play();
 
-        //duration→m_ExplosionParticles.durationはobsolete(廃止)されているため、下記のように「main」を追記すること。2017.3現在。
-        //Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.main.duration);
         Destroy(m_ExplosionParticles.gameObject, m_ExplosionParticles.duration);
 
         Destroy(gameObject);
@@ -59,7 +71,6 @@ public class ShellExplosion : MonoBehaviour
 
     private float CalculateDamage(Vector3 targetPosition)
     {
-
 
         // Calculate the amount of damage a target should take based on it's position.
         Vector3 explosionToTarget = targetPosition - transform.position;
@@ -70,9 +81,10 @@ public class ShellExplosion : MonoBehaviour
 
         float damage = relativeDistance * m_MaxDamage;
 
-
         damage = Mathf.Max(0f, damage);
 
         return damage;
+
     }
 }
+
