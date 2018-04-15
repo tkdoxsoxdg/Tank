@@ -11,7 +11,9 @@ public class GameManager : MonoBehaviour
     public CameraControl m_CameraControl;
     public Text m_MessageText;
     public GameObject m_TankPrefab;
+    public GameObject m_ShellPrefab;
     public TankManager[] m_Tanks;
+    public TankManager[] m_Shells;
 
 
     private int m_RoundNumber;
@@ -44,6 +46,17 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void SpawnAllShells()
+    {
+        for (int i = 0; i < m_Shells.Length; i++)
+        {
+            m_Shells[i].m_Instance =
+                Instantiate(m_ShellPrefab, m_Shells[i].m_SpawnPoint.position, m_Shells[i].m_SpawnPoint.rotation) as GameObject;
+            m_Shells[i].m_shellNumber = i + 1;
+            m_Shells[i].Setup();
+        }
+
+    }
 
     private void SetCameraTargets()
     {

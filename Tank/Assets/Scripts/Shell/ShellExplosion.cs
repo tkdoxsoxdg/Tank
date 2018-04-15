@@ -4,8 +4,9 @@ using System.Collections;
 public class ShellExplosion : MonoBehaviour
 {
     [HideInInspector]public int ShooterID;
-    public Transform ShellPrefab;
-    public Transform TankPrefab;
+    [HideInInspector]public int ShellID;
+    //public Transform ShellPrefab;
+    //public Transform TankPrefab;
     public LayerMask m_TankMask;                        // 爆発が影響するものをフィルタリングするために使用。ここでは、"プレイヤー" に設定されます。
     public ParticleSystem m_ExplosionParticles;         // 爆発時に再生するパーティクルへの参照
     public AudioSource m_ExplosionAudio;                // 爆発時に再生するオーディオへの参照
@@ -19,13 +20,10 @@ public class ShellExplosion : MonoBehaviour
     {
         //これまでに破棄されていない場合は、生存期間が過ぎたら砲弾を破棄します。
         Destroy(gameObject, m_MaxLifeTime);
-        Transform shell = Instantiate(ShellPrefab) as Transform;
-        Transform tank = Instantiate(TankPrefab) as Transform;
-        if (ShooterID == GetComponent<TankShooting>().m_PlayerNumber)
-        {
-            Physics.IgnoreCollision(shell.GetComponent<Collider>(), tank.GetComponent<Collider>());
-        }
-
+        //Transform shell = Instantiate(ShellPrefab) as Transform;
+        //Transform tank = Instantiate(TankPrefab) as Transform;
+        //if (ShooterID == GetComponent<TankShooting>().m_PlayerNumber)
+            //Physics.IgnoreCollision(shell.GetComponent<Collider>(), tank.GetComponent<Collider>());
     }
 
 

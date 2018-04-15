@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class TankShooting : MonoBehaviour
 {
     public int m_PlayerNumber = 1;     //player1 => Fire1, player2 => Fire2 参照する入力先の参照。
+    public int m_shellNumber = 1;
     public Rigidbody m_Shell;
     public Transform m_FireTransform;    //砲弾の位置。発射されたときの方向の参照。
     public Slider m_AimSlider;           //作成したFillの参照。
@@ -16,9 +17,11 @@ public class TankShooting : MonoBehaviour
 
 
     private string m_FireButton;      //発射コマンドの参照
+    private string m_ShellButton;
     private float m_CurrentLaunchForce;
     private float m_ChargeSpeed;  //発射スピード
     private bool m_Fired;         //発射の判定
+    private bool m_shelled;
 
     //Tankが倒されたときの挙動
     private void OnEnable()
@@ -31,7 +34,9 @@ public class TankShooting : MonoBehaviour
     private void Start()
     {
         m_FireButton = "Fire" + m_PlayerNumber;
-
+        //Debug.Log(m_FireButton);
+        m_ShellButton = "Shell" + m_shellNumber;
+        Debug.Log(m_ShellButton);
         m_ChargeSpeed = (m_MaxLaunchForce - m_MinLaunchForce) / m_MaxChargeTime;
     }
 
@@ -78,6 +83,9 @@ public class TankShooting : MonoBehaviour
 
         Rigidbody shellInstance = Instantiate(m_Shell, m_FireTransform.position, m_FireTransform.rotation) as Rigidbody;
         shellInstance.GetComponent<ShellExplosion>().ShooterID = m_PlayerNumber;
+        //Debug.Log(m_PlayerNumber);
+        shellInstance.GetComponent<ShellExplosion>().ShellID = m_shellNumber;
+        Debug.Log(m_shellNumber);
         shellInstance.velocity = m_CurrentLaunchForce * m_FireTransform.forward;
         m_ShootingAudio.clip = m_FireClip;
         m_ShootingAudio.Play();
